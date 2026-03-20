@@ -34,6 +34,7 @@ MOS          := $(POFILES:$(PO)/%.po=$(BUILD)/locale/%/LC_MESSAGES/$(UUID).mo)
 
 RESJS	     := $(BUILD)/resource.js
 GITHASH     := $(shell git rev-parse --short HEAD)
+TSC         := ./node_modules/.bin/tsc
 jsvar         = printf "const $(1) = \`$(2)\`;\n"
 jsvarfile     = printf "const $(1) = \`%s\`;\n" "$$(cat $(2))"
 
@@ -83,7 +84,7 @@ ts: $(BUILD)/extension.js
 # Also inserts "const authors=FILE" into resources.js
 $(BUILD)/extension.js $(BUILD)/resource.js: $(SRCS) $(AUTHORS) ./node_modules/.package-lock.json
 	printf -- 'NEEDED: tsc\n'
-	tsc
+	$(TSC)
 	@touch $(BUILD)/extension.js
 
 	@if ! grep -q '// Inserted' $(RESJS); then \
